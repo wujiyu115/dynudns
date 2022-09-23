@@ -24,6 +24,8 @@ func (Provider) CaddyModule() caddy.ModuleInfo {
 // Provision sets up the module. Implements caddy.Provisioner.
 func (p *Provider) Provision(ctx caddy.Context) error {
 	p.Provider.APIToken = caddy.NewReplacer().ReplaceAll(p.Provider.APIToken, "")
+	p.Provider.Logger = ctx.Logger(p)
+	// p.Provider.Logger.Info(p.Provider.APIToken)
 	return nil
 }
 
@@ -50,6 +52,16 @@ func (p *Provider) UnmarshalCaddyfile(d *caddyfile.Dispenser) error {
 				}
 				if d.NextArg() {
 					p.Provider.APIToken = d.Val()
+				}
+				if d.NextArg() {
+					return d.ArgErr()
+				}
+			case "proxy_url":
+				if p.Provider.ProxyUrl != "" {
+					return d.Err("API token already set")
+				}
+				if d.NextArg() {
+					p.Provider.ProxyUrl = d.Val()
 				}
 				if d.NextArg() {
 					return d.ArgErr()

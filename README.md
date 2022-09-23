@@ -17,7 +17,7 @@ This package contains a DNS provider module for [Caddy](https://github.com/caddy
 ## Caddy module name
 
 ```
-dns.providers.provider_name
+dns.providers.dynu
 ```
 
 ## Config examples
@@ -30,8 +30,9 @@ To use this module for the ACME DNS challenge, [configure the ACME issuer in you
 	"challenges": {
 		"dns": {
 			"provider": {
-				"name": "provider_name",
+				"name": "dynu",
 				"api_token": "YOUR_PROVIDER_API_TOKEN"
+				"proxy_url": "http://192.168.31.139:8118"
 			}
 		}
 	}
@@ -43,13 +44,19 @@ or with the Caddyfile:
 ```
 # globally
 {
-	acme_dns provider_name ...
+	acme_dns dynu ...
 }
 ```
 
 ```
 # one site
 tls {
-	dns provider_name ...
+	dns dynu ...
 }
+```
+
+## Develop
+```
+apt install xcaddy
+xcaddy run --config Caddyfile
 ```

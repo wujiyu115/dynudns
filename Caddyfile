@@ -1,0 +1,22 @@
+{
+  http_port 8888
+}
+
+*.caddy.mywire.org:4443 {
+    tls {
+        dns dynu {
+            api_token "xxx"
+            proxy_url "http://192.168.31.139:8118"
+        }
+        resolvers 8.8.8.8
+    }
+
+    @test host test.caddy.mywire.org
+    handle @test {
+        reverse_proxy 127.0.0.1:9443
+    }
+    # Fallback for otherwise unhandled domains
+    handle {
+        abort
+    }
+}
